@@ -1,0 +1,37 @@
+---
+- name: add repo_url
+  apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable
+    state: present
+
+- name: apt-update
+  apt:
+    update_cache: yes
+
+- name: Install Docker
+  apt:
+    name: docker
+    state: present
+
+- name: Create new directory
+  file:
+    path: /home/edureka/Downloads/dockDeploy
+    state: directory
+
+- name: Copy war file
+  copy:
+    src: /home/edureka/DevOpsClassCodes/target/addressbook.war
+    dest: /home/edureka/Downloads/dockDeploy/
+
+- name: Copy Dockerfile
+  copy:
+    src: Dockerfile
+    dest: /home/edureka/Downloads/dockDeploy/
+
+- name: Build Docker Image
+  command: chdir=/home/edureka/Downloads/dockDeploy/ docker build . -t edureka/inclass
+
+- name: Run Docker Container
+  command: chdir=/home/edureka/Downloads/dockDeploy/ docker run -it -d -p 8086:8080 edureka/inclass
+
+# tasks file for proj

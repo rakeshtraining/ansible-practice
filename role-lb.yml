@@ -1,0 +1,9 @@
+---
+
+# web
+- hosts: slave
+  sudo: yes
+
+  roles:
+    - lb
+
